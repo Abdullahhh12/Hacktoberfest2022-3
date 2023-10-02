@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dino Game</title>
+  <style>
+    body {
+      background-color: white;
+      color: black;
+    }
+
+    canvas {
+      display: block;
+      margin: 0 auto;
+    }
+
+    #dino {
+      position: absolute;
+      bottom: 50px;
+      left: 100px;
+    }
+
+    #cactus {
+      position: absolute;
+      bottom: 50px;
+      right: 500px;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="canvas" width="500" height="300"></canvas>
+
+  <img id="dino" src="https://i.imgur.com/t-rex.png" alt="Dino">
+  <img id="cactus" src="https://i.imgur.com/cactus.png" alt="Cactus">
+
+  <script>
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+
+    // Game variables
+    let dinoX = 100;
+    let dinoY = 250;
+    let dinoJumping = false;
+
+    let cactusX = 500;
+    let cactusY = 250;
+
+    // Game loop
+    function gameLoop() {
+      // Clear the canvas
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Draw the dino
+      ctx.drawImage(document.getElementById("dino"), dinoX, dinoY, 50, 50);
+
+      // Draw the cactus
+      ctx.drawImage(document.getElementById("cactus"), cactusX, cactusY, 50, 50);
+
+      // Move the cactus
+      cactusX -= 1;
+
+      // Check for collisions
+      if (dinoX + 50 > cactusX && dinoX < cactusX + 50 && dinoY + 50 > cactusY) {
+        // Game over
+        alert("Game over!");
+        return;
+      }
+
+      // Jump the dino if necessary
+      if (dinoJumping) {
+        dinoY -= 5;
+        if (dinoY <= 150) {
+          dinoJumping = false;
+        }
+      }
+
+      // Request the next animation frame
+      requestAnimationFrame(gameLoop);
+    }
+
+    // Start the game loop
+    requestAnimationFrame(gameLoop);
+
+    // Add event listeners for keyboard input
+    document.addEventListener("keydown", function(e) {
+      if (e.key === " ") {
+        dinoJumping = true;
+      }
+    });
+
+    document.addEventListener("keyup", function(e) {
+      if (e.key === " ") {
+        dinoJumping = false;
+      }
+    });
+  </script>
+</body>
+</html>
